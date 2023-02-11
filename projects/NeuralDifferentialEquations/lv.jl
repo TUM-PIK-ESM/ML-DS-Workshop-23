@@ -2,27 +2,27 @@
 import Pkg
 Pkg.activate("projects/NeuralDifferentialEquations") # change this to "." if your working directy is already projects/NeuralDifferentialEquations
 
-using Flux, DifferentialEquations, Plots, DiffEqSensitivity
+using Flux, DifferentialEquations, Plots, DiffEqSensitivity, Random
 using ChaoticNDETools, NODEData
+Random.seed!(1234) # we set a random seed to have reproducible results in the script
 
 begin 
     function lotka_volterra(x,p,t)
         α, β, γ, δ = p 
         [α*x[1] - β*x[1]*x[2], -γ*x[2] + δ*x[1]*x[2]]
     end
-    
-    α = 1.3
-    β = 0.9
-    γ = 0.8
-    δ = 1.8
-    p = [α, β, γ, δ] 
-    tspan = (0.,50.)
-    dt = 0.1 
 
-    x0 = [0.44249296, 4.6280594] 
+    α = 1.
+    β = 0.5
+    γ = 1.
+    δ = 0.2
+    p = [α, β, γ, δ] 
+    tspan = (0.,50.) # this is the time interval we want to integrate our system for 
     
+    x0 = [20., 5.] # some initial conditions 
+
     prob = ODEProblem(lotka_volterra, x0, tspan, p) 
-    sol = solve(prob, Tsit5(), saveat=dt)
+    sol = solve(prob, saveat=dt)
 end 
 
 train, valid = NODEDataloader(sol, 10; dt=dt, valid_set=0.8)
@@ -32,9 +32,7 @@ nn = Chain(Dense(2, N_WEIGHTS, swish), Dense(N_WEIGHTS, N_WEIGHTS, swish), Dense
 p, re_nn = Flux.destructure(nn)
 
 neural_ode(u, p, t) = re_nn(p)(u)
-basic_tgrad(u,p,t) = zero(u)
-nnf = ODEFunction{false}(neural_ode,tgrad=basic_tgrad)
-node_prob = ODEProblem(nnf, x0, (Float32(0.),Float32(dt)), p)
+node_prob = ODEProblem(neural_ode, x0, (Float32(0.),Float32(dt)), p)
 
 model = ChaoticNDE(node_prob)
 model(train[1])
@@ -72,6 +70,12 @@ if TRAIN
         end 
 
         plot_node()
+
+        if (i_e % 5) == 0 # monitor the training loss
+            training_loss = mean([loss(model(train[i]), train[i][2]) for i=1:length(train)])
+            valid_loss = mean([loss(model(valid[i]), valid[i][2]) for i=1:length(valid)])
+            println(string("Epoch ",i_e, "/",N_epochs, ": training loss =", training_loss ," valid loss=", valid_loss))
+        end
 
         if (i_e % 30) == 0  # reduce the learning rate every 30 epochs
             η /= 2
