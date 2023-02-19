@@ -9,6 +9,7 @@ The material for the workshop is mostly presented in the form of Jupyter noteboo
 * [Welcome & introduction to the workshop](Introduction-Talk.pdf)
 * [Solving Dynamical Systems numerically in Julia](julia_crash_course.ipynb)
 * [Machine Learning for Dynamical Systems Overview](ML-DS-Overview.ipynb)
+* [General Project Information](project-info.pdf)
 * [Project Method I: Neural Differential Equations](projects/NeuralDifferentialEquations/NeuralDifferentialEquations.ipynb)
 * [Project Method II: Reservoir Computing](projects/ReservoirComputing/reservoir_computing.ipynb)
 * [Project Method III: Symbolic Regression / SINDy](projects/SINDy/SINDy.ipynb)
