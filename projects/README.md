@@ -8,7 +8,7 @@ In the [Overview talk]() we presented you three different methods that combine d
 
 ## Reservoir Computing 
 
-[In the reservoir notebook](ReservoirComptuing/reservoir_computing.ipynb) we will use `ReservoirComputing.jl` for approximation dynamical system. The approach works very well for low-dimensional chaotic system and is computational less demanding than other ANNs. Apply it to a dynamical system of your choice or some your research data. 
+[In the reservoir notebook](ReservoirComputing/reservoir_computing.ipynb) we will use `ReservoirComputing.jl` for approximation dynamical system. The approach works very well for low-dimensional chaotic system and is computational less demanding than other ANNs. Apply it to a dynamical system of your choice or some your research data. 
 
 ## SINDy + Neural Differential Equations
 
