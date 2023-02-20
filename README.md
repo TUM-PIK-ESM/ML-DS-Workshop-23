@@ -14,4 +14,5 @@ The material for the workshop is mostly presented in the form of Jupyter noteboo
 * [Project Method II: Reservoir Computing](projects/ReservoirComputing/reservoir_computing.ipynb)
 * [Project Method III: Symbolic Regression / SINDy](projects/SINDy/SINDy.ipynb)
 
+* [Indian summer monsoon data](https://github.com/takahito321/Indian_monsoon_2023_Winter_School)
 * [Julia cheat sheet (external link)](https://cheatsheet.juliadocs.org)
